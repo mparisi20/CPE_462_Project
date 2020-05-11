@@ -2,21 +2,27 @@
 #define IMAGE_PROCESSOR_H
 
 #include <cstdint>
+#include <cstdio>
+#include <vector>
+#include <string>
 #include "CImg.h"
+
+using std::vector;
+using std::string;
 
 class ImageProcessor
 {
-	// Image height in pixels
-	uint32_t nRows;
-	// Image width in pixels
-	uint32_t nCols;	
-	CImg<int32_t> image;
+	vector<CImg<int32_t>&> images;
 	
 	
 public:
 	
-	Image();
-	virtual ~Image();
+	ImageProcessor();
+	virtual ~ImageProcessor();
+	
+	// load image from file at filename in raw format (e.g. .512, .256, etc) and 
+	// provide width and height
+	void loadImage(string filename, uint32_t width, uint32_t height, string name);
 	
 	// get/set pixel
 	int32_t& operator()(uint32_t x, uint32_t y);
@@ -29,6 +35,13 @@ public:
 	
 	// remove image from screen
 	void clear();
+	
+	// perform high-pass filtering on the image
+	void highPassFilter();
+	
+	
+	void negative();
+	
 };
 
 
