@@ -15,8 +15,8 @@ class ImageProcessor
 	
 public:
 	
-	Image();
-	virtual ~Image();
+	ImageProcessor();
+	virtual ~ImageProcessor();
 	
 	// get/set pixel
 	int32_t& operator()(uint32_t x, uint32_t y);
@@ -29,6 +29,9 @@ public:
 	
 	// remove image from screen
 	void clear();
+	
+	// perform high-pass filtering on the image
+	void highPassFilter();
 };
 
 

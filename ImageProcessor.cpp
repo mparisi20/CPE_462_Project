@@ -16,8 +16,7 @@ uint32_t ImageProcessor::getSize()
 }
 
 // High-pass Filter
-
-void ImageProcessor::highPassFilter(Image& img_in)
+void ImageProcessor::highPassFilter()
 {
 	
 	
