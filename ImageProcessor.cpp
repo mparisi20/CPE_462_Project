@@ -18,6 +18,6 @@ uint32_t ImageProcessor::getSize()
 // High-pass Filter
 void ImageProcessor::highPassFilter()
 {
-	
+	//test
 	
 }
