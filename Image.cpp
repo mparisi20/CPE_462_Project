@@ -9,3 +9,8 @@ Image::~Image()
 {
 	//TODO
 }
+
+uint32_t Image::getSize()
+{
+	return nRows * nCols;
+}
