@@ -1,4 +1,6 @@
 #include <cstdint>
+#ifndef IMAGE_H
+#define IMAGE_H
 
 template<typename T>
 class Image
@@ -15,3 +17,6 @@ public:
 	
 	
 };
+
+
+#endif /* IMAGE_H */
