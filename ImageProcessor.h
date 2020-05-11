@@ -1,10 +1,10 @@
-#ifndef IMAGE_H
-#define IMAGE_H
+#ifndef IMAGE_PROCESSOR_H
+#define IMAGE_PROCESSOR_H
 
 #include <cstdint>
 #include "CImg.h"
 
-class Image
+class ImageProcessor
 {
 	// Image height in pixels
 	uint32_t nRows;
@@ -32,4 +32,4 @@ public:
 };
 
 
-#endif /* IMAGE_H */
+#endif /* IMAGE_PROCESSOR_H */
