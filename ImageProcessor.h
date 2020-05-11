@@ -4,42 +4,52 @@
 #include <cstdint>
 #include <cstdio>
 #include <vector>
+#include <map>
 #include <string>
 #include "CImg.h"
 
-using std::vector;
+using std::map;
 using std::string;
+using std::unordered_map;
+
 
 class ImageProcessor
 {
-	vector<CImg<int32_t>&> images;
+private:
+	class CImgData
+	{
+	public:
+		CImg<int32_t> image;
+		CImgDisplay disp;
+	}
 	
-	
+	unordered_map<string, CImgData> images;
+
 public:
 	
 	ImageProcessor();
 	virtual ~ImageProcessor();
 	
-	// load image from file at filename in raw format (e.g. .512, .256, etc) and 
-	// provide width and height
-	void loadImage(string filename, uint32_t width, uint32_t height, string name);
+	// load image from file at filename in raw format (e.g. .512, .256, etc) 
+	// and display it on screen
+	void loadImage(string filename, uint32_t width, uint32_t height, string title);
 	
-	// get/set pixel
-	int32_t& operator()(uint32_t x, uint32_t y);
-	
-	// get size in pixels
-	uint64_t getSize();
-	
-	// draw image to screen
-	void draw();
+	// get size of a currently loaded image in pixels
+	uint64_t getSize(string title);
 	
 	// remove image from screen
 	void clear();
 	
+	// save every image on screen to files in raw format
+	void save();
+	
 	// perform high-pass filtering on the image
 	void highPassFilter();
 	
+	// lowpass filtering
+	void lowPassFilter();
 	
+	// negative
 	void negative();
 	
 };
