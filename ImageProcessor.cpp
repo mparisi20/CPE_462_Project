@@ -1,42 +1,40 @@
 #include "ImageProcessor.h"
 #include <thread>
+#include <iostream>
+#include <cstdio>
 
-// Thread
-void display_wait(CImgDisplay *disp)
-{
-	if (disp) {
-		while (!disp->is_closed)
-			disp.wait();
-		delete disp;
-	} else {
-		cerr << "Error in display_wait: disp is a nullptr\n" << endl;
-	}
-}
+using std::cerr;
+using namespace cimg_library;
 
 ImageProcessor::ImageProcessor()
 {
 	
 }
 
-ImageProcessor::loadImage(string filename, uint32_t width, uint32_t height, string title)
+void ImageProcessor::loadImage(string filename, uint32_t width, uint32_t height, string title)
 {
+	FILE *fp = fopen(filename, "rb");
+	if (!fp) {
+		cerr << "Could not open file " << filename << "\n";
+		return;
+	}
+	fseek(fp, 0, SEEK_END);
+	long size = ftell(fp);
+	rewind(fp);
+	if (size != uint64_t(width)*height) {
+		cerr << filename << " is not the indicated size\n";
+		return;
+	}
 	
-	
-	
-	
-	thread th(&display_wait, );
-	
-	CImgDisplay disp_in(image_disp,"Image_In",0);
+	CImgData *imgData = new CImgData(fp, width, height, title);
+
+	images.insert(make_pair<string, CImgData*>(imgData->getTitle(), imgData));
+	thread th(&waitToUnload, imgData);
 }
 
 ImageProcessor::~ImageProcessor()
 {
 	//TODO
-}
-
-uint32_t ImageProcessor::getSize()
-{
-	return nRows * nCols;
 }
 
 // High-pass Filter

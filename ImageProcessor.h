@@ -8,7 +8,6 @@
 #include <string>
 #include "CImg.h"
 
-using std::map;
 using std::string;
 using std::unordered_map;
 
@@ -19,11 +18,52 @@ private:
 	class CImgData
 	{
 	public:
-		CImg<int32_t> image;
-		CImgDisplay disp;
+		CImgData(CImg<int32_t> *img, CImgDisplay *disp) : image(img), display(disp) { }
+		
+		CImgData(FILE *fp, uint32_t width, uint32_t height, string title)
+		{
+			CImg<int> *img = new CImg<int>(width, height, 1, 1, 0);
+			
+			for (uint32_t y = 0; y < height; y++) {
+				for (uint32_t x = 0; x < width; x++) {
+					int c;
+					if ((c = fgetc(fp)) != EOF) {
+						(*img)(x, y, 0, 0) = c;
+					} else {
+						cerr << "Error reading file for image " << title << endl;
+						return;
+					}
+				}
+			}
+			
+			CImgDisplay *disp = new CImgDisplay((*img), title.c_str(), 0);
+			image = img;
+			display = disp;			
+		}
+		
+		~CImgData() {
+			delete image;
+			delete display;
+		}
+		
+		string getTitle() {
+			return display->title();
+		}
+		
+		bool isClosed() {
+			return display->is_closed;
+		}
+		
+		void wait() {
+			display->wait();
+		}
+		
+		CImg<int32_t> *image;
+		CImgDisplay *display;
 	}
 	
-	unordered_map<string, CImgData> images;
+	// mapping of title to image/display
+	unordered_map<string, CImgData*> images;
 
 public:
 	
@@ -34,8 +74,14 @@ public:
 	// and display it on screen
 	void loadImage(string filename, uint32_t width, uint32_t height, string title);
 	
-	// get size of a currently loaded image in pixels
-	uint64_t getSize(string title);
+	void waitToUnload(CImgData* imgData)
+	{
+		while (!imgData.isClosed)
+			imgData.wait();
+		// Window has been closed, so remove the image from the map
+		images.erase(imgData.getTitle());
+		delete imgData;
+	}
 	
 	// remove image from screen
 	void clear();
