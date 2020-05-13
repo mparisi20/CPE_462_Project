@@ -22,7 +22,18 @@ int main(int argc, char *argv[])
 	float new_T, old_T, delta_T;
 	long count1, count2;
 
-	enum ImageProcess { negative, histogram_equalization, laplacian, threshold };
+	enum ImageProcess { 
+		negative, 
+		histogram_equalization, 
+		laplacian, 
+		threshold,
+		high_pass_filter,
+		low_pass_filter,
+		// TODO: add more processes!
+
+
+		
+		};
 
 
 	if(argc != 6) { printf(".\\imageprocessing.exe <infile> <outfile> <width> <height> <process>\n"); return(1);}
@@ -211,7 +222,63 @@ int main(int argc, char *argv[])
 					image_out[j][k] = 0;
 			}
 		}		
-	} else {
+	} else if (process == high_pass_filter) {
+		int m = 0, n = 0, o = 0, p = 0, q = 0;
+		for (int j = 0; j < height; j++) {
+			for (int k = 0; k < width; k++) {
+				m = image_in[j][k] * 5;
+				if (j + 1 < height) {
+					n = image_in[j + 1][k] * (-1);
+				}
+				if (j - 1 > 0) {
+					o = image_in[j - 1][k] * (-1);
+				}
+				if (k + 1 < width) {
+					p = image_in[j][k + 1] * (-1);
+				}
+				if (k - 1 > 0) {
+					q = image_in[j][k - 1] * (-1);
+				}
+				m = m + n + o + p + q;
+				if (m > 255) {
+					m = 255;
+				}
+				else if (m < 0) {
+					m = 0;
+				}
+				image_out[j][k] = m;
+			}
+		}
+	} else if (process == low_pass_filter) {
+		int m = 0, n = 0, o = 0, p = 0, q = 0;
+		for (j = 0; j < height; j++) {
+			for (k = 0; k < width; k++) {
+				m = image_in[j][k] * -3;
+				if (j + 1 < height) {
+					n = image_in[j + 1][k] * (1);
+				}
+				if (j - 1 > 0) {
+					o = image_in[j - 1][k] * (1);
+				}
+				if (k + 1 < width) {
+					p = image_in[j][k + 1] * (1);
+				}
+				if (k - 1 > 0) {
+					q = image_in[j][k - 1] * (1);
+				}
+				m = m + n + o + p + q;
+				if (m > 255) {
+					m = 255;
+				}
+				else if (m < 0) {
+					m = 0;
+				}
+				image_out[j][k] = m;
+			}
+		}
+	}
+	
+	else {
 		printf("ERROR: invalid image process operation %d\n", (int) process);
 		printf("Performing no process...\n");
 		for (j = 0; j < height; j++)
