@@ -4,3 +4,10 @@
 
 *.out
 
+*.obj
+
+*.pdb
+
+*.ilk
+
+.vscode/
