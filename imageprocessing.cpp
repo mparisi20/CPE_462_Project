@@ -4,13 +4,16 @@
  **********************************************************************************/
 
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
-#include <inttypes.h>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
+#include <cinttypes>
+#include <random>
+#include <iostream>
 
 #include "CImg.h"
+
 using namespace cimg_library;
 
 int main(int argc, char *argv[])
@@ -29,6 +32,8 @@ int main(int argc, char *argv[])
 		threshold,
 		high_pass_filter,
 		low_pass_filter,
+		speckle,
+
 		// TODO: add more processes!
 
 
@@ -274,6 +279,21 @@ int main(int argc, char *argv[])
 					m = 0;
 				}
 				image_out[j][k] = m;
+			}
+		}
+	} else if (process == speckle) {
+		// Create normal distribution with mean 1 and stddev 0
+		std::random_device rd{};
+		std::mt19937 gen{rd()};
+
+		// Model speckle as multiplicative noise
+		std::normal_distribution<double> d{1.75,0};
+		for (j = 0; j < height; j++) {
+			for (k = 0; k < width; k++) {
+				int new_value = std::round(image_in[j][k] * d(gen));
+				// debug
+				//std::cout << new_value << std::endl;
+				image_out[j][k] = new_value;
 			}
 		}
 	}
