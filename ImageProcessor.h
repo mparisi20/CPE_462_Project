@@ -20,6 +20,14 @@ private:
 	public:
 		CImgData(CImg<int32_t> *img, CImgDisplay *disp) : image(img), display(disp) { }
 		
+		CImgData(uint32_t width, uint32_t height, string title)
+		{
+			CImg<int> *img = new CImg<int>(width, height, 1, 1, 0);
+			CImgDisplay *disp = new CImgDisplay((*img), title.c_str(), 0);
+			image = img;
+			display = disp;	
+		}
+		
 		CImgData(FILE *fp, uint32_t width, uint32_t height, string title)
 		{
 			CImg<int> *img = new CImg<int>(width, height, 1, 1, 0);
@@ -56,6 +64,14 @@ private:
 		
 		void wait() {
 			display->wait();
+		}
+		
+		uint32_t getWidth() {
+			return image->
+		}
+		
+		uint32_t getHeight() {
+			
 		}
 		
 		CImg<int32_t> *image;

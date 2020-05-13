@@ -37,14 +37,30 @@ ImageProcessor::~ImageProcessor()
 	//TODO
 }
 
-// High-pass Filter
-void ImageProcessor::highPassFilter()
+// High-pass Filter the selected image
+void ImageProcessor::highPassFilter(string imageName)
 {
-	
 	
 }
 
-void ImageProcessor::negative()
+void ImageProcessor::negative(string imageNameIn, string imageNameOut)
+{
+	if (images.find(imageNameIn) == images.end()) {
+		cerr << "An image named " << imageNameIn << " is not currently loaded" << endl;
+	} else {
+		CImgData *imgIn = images[imageNameIn];
+		CImgData *imgOut = new CImgData(imgIn->getWidth(), imgIn->getHeight, imageNameOut);
+		CImgData(uint32_t width, uint32_t height, string title)
+		for (uint32_t y = 0; y < height; y++) {
+			for (uint32_t x = 0; x < width; x++) {
+				= 255 - (*images[imageNameIn])(x, y, 0, 0);
+			}
+		}
+	  
+	}
+}
+
+void ImageProcessor::negative(string imageName)
 {
 	
 	img(x, y, 0, 0, img.width() * img.height(), 0);
