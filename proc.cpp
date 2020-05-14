@@ -290,7 +290,7 @@ int main(int argc, char *argv[])
 			}
 		}
 	} else if (process == speckle) {
-		// Create normal distribution with mean 1 and stddev 0
+		// Create normal distribution
 		std::random_device rd{};
 		std::mt19937 gen{rd()};
 
@@ -305,7 +305,7 @@ int main(int argc, char *argv[])
 			}
 		}
 	} else if (process == white_noise) {
-		// Create normal distribution with mean 1 and stddev 0
+		// Create normal distribution
 		std::random_device rd{};
 		std::mt19937 gen{rd()};
 
