@@ -237,9 +237,13 @@ int main(int argc, char *argv[])
 		}		
 	} else if (process == high_pass_filter) {
 		int m = 0, n = 0, o = 0, p = 0, q = 0;
+		//start implementing the mask
 		for (int j = 0; j < height; j++) {
 			for (int k = 0; k < width; k++) {
+				//center
 				m = image_in[j][k] * 5;
+
+				//implement all four edges
 				if (j + 1 < height) {
 					n = image_in[j + 1][k] * (-1);
 				}
@@ -253,6 +257,7 @@ int main(int argc, char *argv[])
 					q = image_in[j][k - 1] * (-1);
 				}
 				m = m + n + o + p + q;
+				//correct for over/under boundaries
 				if (m > 255) {
 					m = 255;
 				}
@@ -264,9 +269,13 @@ int main(int argc, char *argv[])
 		}
 	} else if (process == low_pass_filter) {
 		int m = 0, n = 0, o = 0, p = 0, q = 0;
+		//start implementing the mask
 		for (j = 0; j < height; j++) {
 			for (k = 0; k < width; k++) {
+				//center
 				m = image_in[j][k] * -3;
+
+				//edges
 				if (j + 1 < height) {
 					n = image_in[j + 1][k] * (1);
 				}
@@ -280,6 +289,7 @@ int main(int argc, char *argv[])
 					q = image_in[j][k - 1] * (1);
 				}
 				m = m + n + o + p + q;
+				//correct for over/under boundaries
 				if (m > 255) {
 					m = 255;
 				}
