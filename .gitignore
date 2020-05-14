@@ -4,3 +4,8 @@
 
 *.out
 
+*.obj
+
+*.pdb
+
+*.ilk
