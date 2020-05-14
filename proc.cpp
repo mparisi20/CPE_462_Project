@@ -1,8 +1,7 @@
-/**********************************************************************************
-* imageproc.c
-* Usage: imageproc in_file_name out_file_name width height
- **********************************************************************************/
-
+// CPE 462 Project
+// by David Li and Max Parisi
+// I pledge my honor that I have abided by the Stevens Honor System.
+	// -David Li, Max Parisi
 
 #include <cstdio>
 #include <cstring>
@@ -25,6 +24,7 @@ int main(int argc, char *argv[])
 	float new_T, old_T, delta_T;
 	long count1, count2;
 
+	// Supported processes
 	enum ImageProcess { 
 		negative, 
 		histogram_equalization, 
@@ -34,14 +34,22 @@ int main(int argc, char *argv[])
 		low_pass_filter,
 		speckle,
 		white_noise
-		// TODO: add more processes!
+	};
 
 
-		
-		};
-
-
-	if(argc != 6) { printf(".\\imageprocessing.exe <infile> <outfile> <width> <height> <process>\n"); return(1);}
+	if(argc != 6) { 
+		printf(".\\proc.exe <infile> <outfile> <width> <height> <process>\n");
+		printf("Supported processes: \n"
+				"0\tnegative\n"
+				"1\thistogram_equalization\n"
+				"2\tlaplacian\n"
+				"3\tthreshold\n"
+				"4\thigh_pass_filter\n"
+				"5\tlow_pass_filter\n"
+				"6\tspeckle\n"
+				"7\twhite_noise\n");
+		return 1;
+	}
 
 	width = atoi(argv[3]);
 	height = atoi(argv[4]);
@@ -119,7 +127,7 @@ int main(int argc, char *argv[])
 
 
 /********************************************************************/
-/* Image Processing begins - code by Max Parisi                     */
+/* Image Processing begins                                          */
 /********************************************************************/
 
 	ImageProcess process = (ImageProcess) atoi(argv[5]);
@@ -196,7 +204,7 @@ int main(int argc, char *argv[])
 		int threshold = initial_T;
 		int pixel;
 		do {
-			printf("threshold == %d\n", threshold);
+			// printf("threshold == %d\n", threshold);
 			prev_threshold = threshold;
 			for (int j = 0; j < height; j++) {
 				for (int k = 0; k < width; k++) {
@@ -311,7 +319,6 @@ int main(int argc, char *argv[])
 				image_out[j][k] = new_value;
 			}
 		}
-
 	} else {
 		printf("ERROR: invalid image process operation %d\n", (int) process);
 		printf("Performing no process...\n");
