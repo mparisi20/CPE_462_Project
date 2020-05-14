@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 		high_pass_filter,
 		low_pass_filter,
 		speckle,
-
+		white_noise
 		// TODO: add more processes!
 
 
@@ -287,7 +287,7 @@ int main(int argc, char *argv[])
 		std::mt19937 gen{rd()};
 
 		// Model speckle as multiplicative noise
-		std::normal_distribution<double> d{1.75,0};
+		std::normal_distribution<double> d{1.75, 0};
 		for (j = 0; j < height; j++) {
 			for (k = 0; k < width; k++) {
 				int new_value = std::round(image_in[j][k] * d(gen));
@@ -296,9 +296,23 @@ int main(int argc, char *argv[])
 				image_out[j][k] = new_value;
 			}
 		}
-	}
-	
-	else {
+	} else if (process == white_noise) {
+		// Create normal distribution with mean 1 and stddev 0
+		std::random_device rd{};
+		std::mt19937 gen{rd()};
+
+		// Model white noise as additive noise
+		std::normal_distribution<double> d{0, 40};
+		for (j = 0; j < height; j++) {
+			for (k = 0; k < width; k++) {
+				int new_value = std::round(image_in[j][k] + d(gen));
+				// debug
+				//std::cout << new_value << std::endl;
+				image_out[j][k] = new_value;
+			}
+		}
+
+	} else {
 		printf("ERROR: invalid image process operation %d\n", (int) process);
 		printf("Performing no process...\n");
 		for (j = 0; j < height; j++)
